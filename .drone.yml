@@ -41,7 +41,7 @@ steps:
         - JREVERSION
         - DOWNLOADURL
       tags:
-        - ${JREVERSION}.${DRONE_COMMIT_SHA:0:7}
+        - jre-11.0.6-10.${DRONE_COMMIT_SHA:0:7}
         - latest
   - name: dockerBuildPushJDK
     image: plugins/docker
@@ -58,7 +58,7 @@ steps:
         - JDKVERSION
         - DOWNLOADURL
       tags:
-        - ${JDKVERSION}.${DRONE_COMMIT_SHA:0:7}
+        - jdk-11.0.6-10.${DRONE_COMMIT_SHA:0:7}
         - latest
 
 trigger:
