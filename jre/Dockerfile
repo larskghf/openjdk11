@@ -1,7 +1,7 @@
 FROM debian:buster-slim as downloader
 
 ARG DOWNLOADURL
-ARG JAVAVERSION
+ARG JREVERSION
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -9,18 +9,18 @@ RUN apt-get update \
         ca-certificates \
         curl \
     && apt-get clean && apt-get autoremove && rm -Rf /var/lib/apt/lists/* && rm -Rf /var/cache/apt \
-    && mkdir /tmp/jre-${JAVAVERSION} \
-    && curl -L --silent ${DOWNLOADURL} | tar -xz --strip-components=1 -C "/tmp/jre-${JAVAVERSION}" \
-    && rm -rf /tmp/jre-${JAVAVERSION}/demo/ /tmp/jre-${JAVAVERSION}/man/
+    && mkdir /tmp/${JREVERSION} \
+    && curl -L --silent ${DOWNLOADURL} | tar -xz --strip-components=1 -C "/tmp/${JREVERSION}" \
+    && rm -rf /tmp/${JREVERSION}/demo/ /tmp/${JREVERSION}/man/
 
 #-----------------------------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------------------------
 FROM debian:buster-slim
 
-ARG JAVAVERSION
+ARG JREVERSION
 
-ENV JAVA_HOME /opt/jre-${JAVAVERSION}/
+ENV JAVA_HOME /opt/${JREVERSION}/
 
-COPY --from=downloader /tmp/jre-${JAVAVERSION} /opt/jre-${JAVAVERSION}
+COPY --from=downloader /tmp/${JREVERSION} /opt/${JREVERSION}
 
-RUN update-alternatives --install /usr/bin/java java /opt/jre-${JAVAVERSION}/bin/java 100
+RUN update-alternatives --install /usr/bin/java java /opt/${JREVERSION}/bin/java 100

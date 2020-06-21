@@ -25,17 +25,11 @@ kind: pipeline
 type: docker
 name: buildPush
 
-environment:
-  JAVAVERSION: 11.0.6-10
-
 steps:
-  - name: generateTags
-    image: debian:buster-slim
-    commands:
-     - echo -n "$$(JAVAVERSION)_${DRONE_COMMIT_SHA:0:7},latest" > .tags
   - name: dockerBuildPushJRE
     image: plugins/docker
     environment:
+      JREVERSION: jre-11.0.6-10
       DOWNLOADURL: https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jre_x64_linux_hotspot_11.0.6_10.tar.gz
     settings:
       repo: kghf/openjdk11-jre
@@ -44,11 +38,15 @@ steps:
       password:
         from_secret: docker_password
       build_args_from_env:
-        - JAVAVERSION
+        - JREVERSION
         - DOWNLOADURL
+      tags:
+        - jre-11.0.6-10.${DRONE_COMMIT_SHA:0:7}
+        - latest
   - name: dockerBuildPushJDK
     image: plugins/docker
     environment:
+      JDKVERSION: jdk-11.0.6-10
       DOWNLOADURL: https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jdk_x64_linux_hotspot_11.0.6_10.tar.gz
     settings:
       repo: kghf/openjdk11-jdk
@@ -57,8 +55,12 @@ steps:
       password:
         from_secret: docker_password
       build_args_from_env:
-        - JAVAVERSION
+        - JDKVERSION
         - DOWNLOADURL
+      tags:
+        - jdk-11.0.6-10.${DRONE_COMMIT_SHA:0:7}
+        - latest
+
 trigger:
   branch:
     - master
