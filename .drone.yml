@@ -11,6 +11,9 @@ steps:
   - name: createTags
     image: debian:buster-slim
     commands:
+      - echo -n "$${JAVAVERSION}_${DRONE_COMMIT_SHA:0:8},latest"
+      - echo "$${DOWNLOADJDK}"
+      - echo "$${DOWNLOADJRE}"
       - echo -n "$${JAVAVERSION}_${DRONE_COMMIT_SHA:0:8},latest" > .tags
       - cat .tags
 #  - name: dockerBuildJDK
