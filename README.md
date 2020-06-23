@@ -4,7 +4,7 @@
 
 OpenJDK (JDK) Image based on Debian Buster (Slim)
 
-Docker Image: https://hub.docker.com/r/larskghf/openjdk11-jdk
+Docker Image: https://hub.docker.com/r/kghf/openjdk11-jdk
 
 --- 
 
@@ -14,4 +14,4 @@ Docker Image: https://hub.docker.com/r/larskghf/openjdk11-jdk
 
 OpenJDK (JRE) Image based on Debian Buster (Slim)
 
-Docker Image: https://hub.docker.com/r/larskghf/openjdk11-jre
+Docker Image: https://hub.docker.com/r/kghf/openjdk11-jre
