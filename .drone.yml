@@ -2,16 +2,16 @@ kind: pipeline
 type: docker
 name: branch
 
+environment:
+  JAVAVERSION2: asdfasdf
+
 steps:
   - name: getTimestamp
     image: debian:buster-slim
     environment:
       JAVAVERSION: 11.0.6-10
     commands:
-      - echo "$JAVAVERSION"
-      - echo "${JAVAVERSION}"
-      - echo "$${JAVAVERSION}"
-      - echo -n "$${JAVAVERSION}_${DRONE_COMMIT_SHA:0:8},latest"
+      - echo $JAVAVERSION2
       - echo -n "$${JAVAVERSION}_${DRONE_COMMIT_SHA:0:8},latest" > .tags
       - cat .tags
 #  - name: dockerBuildJDK
