@@ -52,7 +52,7 @@ steps:
     image: debian:buster-slim
     commands:
       - echo -n "$${JAVAVERSION}_${DRONE_COMMIT_SHA:0:8},latest" > .tags
-  - name: dockerBuildJDK
+  - name: dockerBuildPushJDK
     image: plugins/docker
     settings:
       repo: kghf/openjdk11-jdk
@@ -63,7 +63,7 @@ steps:
       build_args_from_env:
         - JAVAVERSION
         - DOWNLOADJDK
-  - name: dockerBuildJRE
+  - name: dockerBuildPushJRE
     image: plugins/docker
     settings:
       repo: kghf/openjdk11-jre
