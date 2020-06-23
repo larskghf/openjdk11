@@ -8,8 +8,9 @@ steps:
     environment:
       JAVAVERSION: 11.0.6-10
     commands:
-      - echo -n "$JAVAVERSION_${DRONE_COMMIT_SHA:0:8},latest" > .tags
-  - name: dockerBuildPushJDK
+      - echo -n "${JAVAVERSION}_${DRONE_COMMIT_SHA:0:8},latest" > .tags
+      - cat .tags
+  - name: dockerBuildJDK
     image: plugins/docker
     environment:
       JAVAVERSION: 11.0.6-10
