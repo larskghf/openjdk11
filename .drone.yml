@@ -3,10 +3,24 @@ type: docker
 name: branch
 
 steps:
-  - name: buildLocal
+  - name: getTimestamp
     image: debian:buster-slim
+    environment:
+      JAVAVERSION: 11.0.6-10
     commands:
-      - mvn clean package
+      - echo -n "$$(JAVAVERSION)_${DRONE_COMMIT_SHA:0:8},latest" > .tags
+  - name: dockerBuildPushJDK
+    image: plugins/docker
+    environment:
+      JAVAVERSION: 11.0.6-10
+      DOWNLOADURL: https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jdk_x64_linux_hotspot_11.0.6_10.tar.gz
+    settings:
+      repo: kghf/openjdk11-jdk
+      dockerfile: jdk/Dockefile
+      dry_run: true
+      build_args_from_env:
+        - JAVAVERSION
+        - DOWNLOADURL
 
 trigger:
   branch:
@@ -15,28 +29,29 @@ trigger:
 ---
 kind: pipeline
 type: docker
-name: pullrequest
+name: buildPushJDK
 
 steps:
-  - name: buildLocal
+  - name: getTimestamp
     image: debian:buster-slim
+    environment:
+      JAVAVERSION: 11.0.6-10
     commands:
-      - mvn clean package
-
-trigger:
-  event:
-    - pull_request
-
----
-kind: pipeline
-type: docker
-name: buildPush
-
-steps:
-  - name: buildPush
-    image: maven:3-jdk-11
-    commands:
-      - mvn clean package
+      - echo -n "$$(JAVAVERSION)_${DRONE_COMMIT_SHA:0:8},latest" > .tags
+  - name: dockerBuildPushJDK
+    image: plugins/docker
+    environment:
+      JAVAVERSION: 11.0.6-10
+      DOWNLOADURL: https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jdk_x64_linux_hotspot_11.0.6_10.tar.gz
+    settings:
+      repo: kghf/openjdk11-jdk
+      dockerfile: jdk/Dockefile
+      username: larskghf
+      password:
+        from_secret: docker_password
+      build_args_from_env:
+        - JAVAVERSION
+        - DOWNLOADURL
 
 trigger:
   branch:
