@@ -1,6 +1,6 @@
 FROM debian:buster-slim as downloader
 
-ARG DOWNLOADURL
+ARG DOWNLOADJDK
 ARG JAVAVERSION
 
 RUN apt-get update \
@@ -10,7 +10,7 @@ RUN apt-get update \
         curl \
     && apt-get clean && apt-get autoremove && rm -Rf /var/lib/apt/lists/* && rm -Rf /var/cache/apt \
     && mkdir /tmp/jdk-${JAVAVERSION} \
-    && curl -L --silent ${DOWNLOADURL} | tar -xz --strip-components=1 -C "/tmp/jdk-${JAVAVERSION}" \
+    && curl -L --silent ${DOWNLOADJDK} | tar -xz --strip-components=1 -C "/tmp/jdk-${JAVAVERSION}" \
     && rm -rf /tmp/jdk-${JAVAVERSION}/demo/ /tmp/jdk-${JAVAVERSION}/man/
 
 #-----------------------------------------------------------------------------------------------------------------------
