@@ -8,20 +8,23 @@ steps:
     environment:
       JAVAVERSION: 11.0.6-10
     commands:
+      - echo $JAVAVERSION
+      - echo ${JAVAVERSION}
+      - echo $${JAVAVERSION}
       - echo -n "${JAVAVERSION}_${DRONE_COMMIT_SHA:0:8},latest" > .tags
       - cat .tags
-  - name: dockerBuildJDK
-    image: plugins/docker
-    environment:
-      JAVAVERSION: 11.0.6-10
-      DOWNLOADURL: https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jdk_x64_linux_hotspot_11.0.6_10.tar.gz
-    settings:
-      repo: kghf/openjdk11-jdk
-      dockerfile: jdk/Dockerfile
-      dry_run: true
-      build_args_from_env:
-        - JAVAVERSION
-        - DOWNLOADURL
+#  - name: dockerBuildJDK
+#    image: plugins/docker
+#    environment:
+#      JAVAVERSION: 11.0.6-10
+#      DOWNLOADURL: https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.6%2B10/OpenJDK11U-jdk_x64_linux_hotspot_11.0.6_10.tar.gz
+#    settings:
+#      repo: kghf/openjdk11-jdk
+#      dockerfile: jdk/Dockerfile
+#      dry_run: true
+#      build_args_from_env:
+#        - JAVAVERSION
+#        - DOWNLOADURL
 
 trigger:
   branch:
