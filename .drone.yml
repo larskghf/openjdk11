@@ -63,6 +63,13 @@ steps:
       build_args_from_env:
         - JAVAVERSION
         - DOWNLOADJDK
+  - name: updateDockerReadmeJDK
+    image: kghf/dockerhub-readme-updater:latest
+    environment:
+      DOCKER_REPO: kghf/openjdk11-jdk
+      DOCKER_USERNAME: larskghf
+      DOCKER_PASSWORD:
+        from_secret: docker_password
   - name: dockerBuildPushJRE
     image: plugins/docker
     settings:
@@ -74,6 +81,14 @@ steps:
       build_args_from_env:
         - JAVAVERSION
         - DOWNLOADJRE
+  - name: updateDockerReadmeJRE
+    image: kghf/dockerhub-readme-updater:latest
+    environment:
+      DOCKER_REPO: kghf/openjdk11-jre
+      DOCKER_USERNAME: larskghf
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+
 
 trigger:
   branch:
